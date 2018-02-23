@@ -1,16 +1,12 @@
 {
   "name": "dragon-bst",
-  "version": "0.0.1",
-  "description": "Different binary search tree implementations, including a self-balancing one (AVL)",
+  "version": "0.0.2",
+  "description": "AVL Binary Search Tree implementation",
   "main": "index.js",
   "scripts": {
     "benchmark": "npm run build && node ./benchmarks/avl.benchmark.js",
     "build": "webpack --config webpack.config.js",
     "test": "jasmine-ts 'spec/**/*.spec.ts'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/recrosoftware/dragon-bst.git"
   },
   "keywords": [
     "avl tree",
@@ -21,11 +17,6 @@
     "name": "Davide Menegatti",
     "email": "d.menegatti@recrosoftware.com"
   },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/recrosoftware/dragon-bst/issues"
-  },
-  "homepage": "https://github.com/recrosoftware/dragon-bst#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
@@ -38,5 +29,14 @@
     "typescript": "^2.7.2",
     "webpack": "^3.11.0",
     "webpack-node-externals": "^1.6.0"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/recrosoftware/dragon-bst#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/recrosoftware/dragon-bst.git"
+  },
+  "bugs": {
+    "url": "https://github.com/recrosoftware/dragon-bst/issues"
   }
 }
