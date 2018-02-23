@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "benchmark": "npm run build && node ./benchmarks/avl.benchmark.js",
+    "build": "npm run build:prod",
     "build:dev": "webpack --config webpack.config.js",
     "build:prod": "webpack --config webpack.config.js --env.production",
     "test": "jasmine-ts 'spec/**/*.spec.ts'"

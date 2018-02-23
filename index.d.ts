@@ -94,4 +94,11 @@ declare module 'dragon-bst' {
      */
     public executeOnEveryNode(action: (key: K, data: V[]) => void): void;
   }
+
+  export class TreeError extends Error {
+    public metadata: { [key: string]: string | number | boolean };
+
+    constructor(message: string);
+    constructor(message: string, metadata: { [key: string]: string | number | boolean });
+  }
 }

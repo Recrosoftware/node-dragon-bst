@@ -57,7 +57,7 @@ export function defaultCompareKeys(a: any, b: any): -1 | 0 | 1 {
     return 0;
   }
 
-  throw new TreeError(`Couldn't compare elements (${a} - ${b})`, {a: a, b: b});
+  throw new TreeError(`Couldn't compare elements ('${a}'[${typeof a}] - '${b}'[${typeof b}])`, {a: a, b: b});
 }
 
 /**
