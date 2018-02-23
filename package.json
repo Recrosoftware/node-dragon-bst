@@ -32,12 +32,12 @@
     "webpack-node-externals": "^1.6.0"
   },
   "license": "MIT",
-  "homepage": "https://github.com/recrosoftware/dragon-bst#readme",
+  "homepage": "https://github.com/Recrosoftware/node-dragon-bst#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/recrosoftware/dragon-bst.git"
+    "url": "git+https://github.com/Recrosoftware/node-dragon-bst.git"
   },
   "bugs": {
-    "url": "https://github.com/recrosoftware/dragon-bst/issues"
+    "url": "https://github.com/Recrosoftware/node-dragon-bst/issues"
   }
 }
