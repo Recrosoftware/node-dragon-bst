@@ -1,0 +1,39 @@
+# Do not publish the following
+
+.npmignore
+.gitignore
+
+/benchmarks
+/src
+/spec
+tsconfig.json
+webpack-config.js
+
+# Following the .gitignore file content
+
+# project
+/tmp
+
+# dependencies
+/node_modules
+/package-lock.json
+npm-debug.log*
+
+# IDEs and editors
+/.idea
+*.iml
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# System Files
+.DS_Store
+Thumbs.db
