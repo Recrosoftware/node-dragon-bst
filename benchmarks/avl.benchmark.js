@@ -1,73 +1,73 @@
 const Benchmark = require('benchmark');
-const {AVLTree} = require('../index');
+const {AVLTree, TreeError} = require('../index');
 
 function getRandomInteger(n) {
   return Math.floor(Math.random() * n);
 }
 
-function getRandomArray(n) {
-  const toReturn = [];
-  for (let i = 0; i < n; ++i) {
-    toReturn.push(i);
-  }
-
-  for (let i = toReturn.length - 1; i >= 0; --i) {
-    const j = getRandomInteger(i);
-
-    const v = toReturn[i];
-    toReturn[i] = toReturn[j];
-    toReturn[j] = v;
-  }
-
-  return toReturn;
-}
-
-console.log('Generating Random data');
-const data = getRandomArray(5000000);
-
-let i = 0;
+let deleteCount = 0;
+let insertCount = 0;
 const tree = new AVLTree({unique: true});
-const initialTreeSize = Math.floor((data.length / 4) + getRandomInteger(data.length / 4));
-
+const initialTreeSize = 4000000;
 
 console.log('Pre-populating tree with ' + initialTreeSize + ' keys');
-for (i = 0; i < initialTreeSize; ++i) {
-  tree.insert(data[i], 'Hello world');
+for (insertCount = 0; insertCount < initialTreeSize; ++insertCount) {
+  tree.insert(insertCount, 'Hello world');
 }
-console.log('Now tree contains ' + tree.getNumberOfKeys() + ' keys');
 
-console.log('Configuring test');
+if (initialTreeSize !== tree.getNumberOfKeys()) {
+  throw new TreeError('Invalid tree size');
+}
+
 const suite = new Benchmark.Suite('AVL Tree Test')
-  .add('tree#insert', () => {
-    tree.insert(data[i], 'Hello world ' + i);
-    i++;
+  .add({
+    'name': 'tree#insert',
+    'fn': () => tree.insert(insertCount, 'Hello world ' + insertCount++)
   })
-  .add('tree#search', () => {
-    tree.search(data[getRandomInteger(i - 1)]);
+  .add({
+    'name': 'tree#search',
+    'fn': () => tree.search(getRandomInteger(insertCount))
   })
-  .add('tree#delete', () => {
-    i--;
-    tree.delete(data[i]);
+  .add({
+    'name': 'tree#searchAfter',
+    'fn': () => tree.searchAfter(getRandomInteger(insertCount))
   })
-  .add('tree#betweenBondus', () => {
-    const query = {};
+  .add({
+    'name': 'tree#searchBefore',
+    'fn': () => tree.searchBefore(getRandomInteger(insertCount))
+  })
+  .add({
+    'name': 'tree#betweenBondus',
+    'fn': () => {
+      const query = {};
 
-    const a = data[getRandomInteger(i - 1)];
-    const b = data[getRandomInteger(i - 1)];
+      const a = getRandomInteger(insertCount - 1);
+      const b = getRandomInteger(insertCount - 1);
 
-    query.$gte = Math.min(a, b);
-    query.$lte = Math.max(a, b);
+      query.$gte = Math.min(a, b);
+      query.$lte = Math.max(a, b);
 
-    tree.betweenBounds(query);
+      tree.betweenBounds(query);
+    }
   })
-  .add('tree#validate', () => {
-    tree.validateTree();
+  .add({
+    'name': 'tree#validate',
+    'fn': () => tree.validateTree()
+  })
+  .add({
+    'name': 'tree#delete',
+    'fn': () => tree.delete(deleteCount++),
+    'onCycle': () => {
+      for (let i = 0; i < 10000; ++i) {
+        tree.insert(insertCount++, null);
+      }
+    }
   });
 
 console.log('Starting tests');
 suite
   .on('cycle', (event) => {
-    console.log(String(event.target));
+    console.log('Tree height: ' + tree.getHeight() + ' - ' + String(event.target));
   })
   .on('complete', () => {
     console.log('Tests completed');

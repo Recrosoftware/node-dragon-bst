@@ -79,6 +79,52 @@ declare module 'dragon-bst' {
     public search(key: K): V[];
 
     /**
+     * Search for data coming right after a specific key.
+     *
+     * @param   key
+     * @returns The data right after the key specified, or [] if no data found.
+     */
+    public searchAfter(key: K): V[];
+
+    /**
+     * Search for data coming right before a specific key.
+     *
+     * @param   key
+     * @returns The data right before the key specified, or [] if no data found.
+     */
+    public searchBefore(key: K): V[];
+
+    /**
+     * Search for key coming right after a specific key.
+     *
+     * @param   key
+     * @returns The key right after the specified one, or undefined if no keys are found.
+     */
+    public searchKeyAfter(key: K): K;
+
+    /**
+     * Search for key coming right before a specific key.
+     *
+     * @param   key
+     * @returns The key right  before the specified one, or undefined if no keys are found.
+     */
+    public searchKeyBefore(key: K): K;
+
+    /**
+     * Return the smallest key from the tree
+     *
+     * @returns The smallest key, or undefined if the tree is empty
+     */
+    public getMinKey(): K;
+
+    /**
+     * Return the greatest key from the tree
+     *
+     * @returns The greatest key, or undefined if the tree is empty
+     */
+    public getMaxKey(): K;
+
+    /**
      * Get all data for a key between bounds.
      * Return it in key order.
      *

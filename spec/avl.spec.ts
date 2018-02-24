@@ -248,20 +248,20 @@ describe('AVL tree', () => {
       expect(tree.betweenBounds({$gte: 11})).toEqual(['data 13', 'data 15', 'data 18']);
       expect(tree.betweenBounds({$lte: 9})).toEqual(['data 3', 'data 5', 'data 8']);
     });
-    it('Can search for keys between two bounds', function () {
+    it('Can search for keys between two bounds', () => {
       const tree = new AVLTree();
 
-      [10, 5, 15, 3, 8, 13, 18].forEach(function (k) {
+      [10, 5, 15, 3, 8, 13, 18].forEach((k) => {
         tree.insert(k, 'data ' + k);
       });
 
       expect(tree.keysBetweenBounds({$gte: 8, $lte: 15})).toEqual([8, 10, 13, 15]);
       expect(tree.keysBetweenBounds({$gt: 8, $lt: 15})).toEqual([10, 13]);
     });
-    it('Bounded search for keys can handle cases where query contains both $lt and $lte, or both $gt and $gte', function () {
+    it('Bounded search for keys can handle cases where query contains both $lt and $lte, or both $gt and $gte', () => {
       const tree = new AVLTree();
 
-      [10, 5, 15, 3, 8, 13, 18].forEach(function (k) {
+      [10, 5, 15, 3, 8, 13, 18].forEach((k) => {
         tree.insert(k, 'data ' + k);
       });
 
@@ -273,15 +273,111 @@ describe('AVL tree', () => {
       expect(tree.keysBetweenBounds({$gte: 8, $lte: 18, $lt: 15})).toEqual([8, 10, 13]);
       expect(tree.keysBetweenBounds({$gte: 8, $lte: 15, $lt: 18})).toEqual([8, 10, 13, 15]);
     });
-    it('Bounded search can work when one or both boundaries are missing', function () {
+    it('Bounded search can work when one or both boundaries are missing', () => {
       const tree = new AVLTree();
 
-      [10, 5, 15, 3, 8, 13, 18].forEach(function (k) {
+      [10, 5, 15, 3, 8, 13, 18].forEach((k) => {
         tree.insert(k, 'data ' + k);
       });
 
       expect(tree.keysBetweenBounds({$gte: 11})).toEqual([13, 15, 18]);
       expect(tree.keysBetweenBounds({$lte: 9})).toEqual([3, 5, 8]);
+    });
+    it('Can find ascending ordered data in a AVL', () => {
+      const tree = new AVLTree<number, { key: number, value: string }>();
+
+      getRandomArray(100).forEach((n) => {
+        tree.insert(n, {key: n, value: 'some data for ' + n});
+      });
+
+      tree.validateTree();
+
+      let key = tree.getMinKey();
+      expect(key).toEqual(0);
+
+      for (let i = 1; i <= 100; ++i) {
+        const next = tree.searchAfter(key);
+
+        if (i === 100) {
+          expect(next).toEqual([]);
+        } else {
+          expect(next.length).toBe(1);
+          expect(next[0].key).toBe(i);
+          expect(next[0].key).toBeGreaterThan(key);
+          key = next[0].key;
+        }
+      }
+    });
+    it('Can find descending ordered data in a AVL', () => {
+      const tree = new AVLTree<number, { key: number, value: string }>();
+
+      getRandomArray(100).forEach((n) => {
+        tree.insert(n, {key: n, value: 'some data for ' + n});
+      });
+
+      tree.validateTree();
+
+      let key = tree.getMaxKey();
+      expect(key).toBe(99);
+
+      for (let i = 1; i <= 100; i++) {
+        const next = tree.searchBefore(key);
+        if (i === 100)
+          expect(next).toEqual([]);
+        else {
+          expect(next.length).toBe(1);
+          expect(next[0].key).toBe(99 - i);
+          expect(next[0].key).toBeLessThan(key);
+          key = next[0].key;
+        }
+      }
+    });
+    it('Can find ascending ordered key in a AVL', () => {
+      const tree = new AVLTree<number, any>();
+
+      getRandomArray(100).forEach((n) => {
+        tree.insert(n, null);
+      });
+
+      tree.validateTree();
+
+      let key = tree.getMinKey();
+      expect(key).toEqual(0);
+
+      for (let i = 1; i <= 100; ++i) {
+        const next = tree.searchKeyAfter(key);
+
+        if (i === 100) {
+          expect(next).toBe(void 0);
+        } else {
+          expect(next).toBe(i);
+          expect(next).toBeGreaterThan(key);
+          key = next;
+        }
+      }
+    });
+    it('Can find descending ordered key in a AVL', () => {
+      const tree = new AVLTree<number, any>();
+
+      getRandomArray(100).forEach((n) => {
+        tree.insert(n, null);
+      });
+
+      tree.validateTree();
+
+      let key = tree.getMaxKey();
+      expect(key).toBe(99);
+
+      for (let i = 1; i <= 100; i++) {
+        const next = tree.searchKeyBefore(key);
+        if (i === 100)
+          expect(next).toBe(void 0);
+        else {
+          expect(next).toBe(99 - i);
+          expect(next).toBeLessThan(key);
+          key = next;
+        }
+      }
     });
   });
   describe('Deletion', () => {
