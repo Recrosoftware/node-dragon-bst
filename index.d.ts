@@ -88,6 +88,15 @@ declare module 'dragon-bst' {
     public betweenBounds(query: AVLTreeQuery<K>): V[];
 
     /**
+     * Get all the keys between bounds.
+     * Return it in key order.
+     *
+     * @param {AVLTreeQuery} query A query used to search the tree, to retrieve all the keys in the tree use {}.
+     * @returns {[]} An array of found keys
+     */
+    public keysBetweenBounds(query: AVLTreeQuery<K>): K[];
+
+    /**
      * Execute a function on every node of the tree, in key order.
      *
      * @param {(key: K, data: V[]) => void} action

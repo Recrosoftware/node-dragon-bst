@@ -66,9 +66,3 @@ export function defaultCompareKeys(a: any, b: any): -1 | 0 | 1 {
 export function defaultCheckValueEquality(a: any, b: any): boolean {
   return a === b;
 }
-
-export function append(array: any[], arrayToAppend: any[]): void {
-  for (const toAppend of arrayToAppend) {
-    array.push(toAppend);
-  }
-}

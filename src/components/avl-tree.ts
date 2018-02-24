@@ -1,4 +1,4 @@
-import {append, defaultCheckValueEquality, defaultCompareKeys, KeyMatcher, TreeError} from './common';
+import {defaultCheckValueEquality, defaultCompareKeys, KeyMatcher, TreeError} from './common';
 
 
 export interface AVLTreeQuery<K> {
@@ -125,6 +125,17 @@ export class AVLTree<K, V> {
   }
 
   /**
+   * Get all the keys between bounds.
+   * Return it in key order.
+   *
+   * @param {AVLTreeQuery} query A query used to search the tree, to retrieve all the keys in the tree use {}.
+   * @returns {[]} An array of found keys
+   */
+  public keysBetweenBounds(query: AVLTreeQuery<K>): K[] {
+    return this.avl.keysBetweenBounds(query);
+  }
+
+  /**
    * Execute a function on every node of the tree, in key order.
    *
    * @param {(key: K, data: V[]) => void} action
@@ -145,7 +156,7 @@ class AVLTreeInternal<K, V> {
 
   private unique: boolean;
   private compareKeys: (a: K, b: K) => -1 | 0 | 1;
-  private checkValueEquality: (a: any, b: any) => boolean;
+  private checkValueEquality: (a: V, b: V) => boolean;
 
   constructor(options: AVLTreeOptions<K, V>) {
     this.parent = null;
@@ -409,16 +420,42 @@ class AVLTreeInternal<K, V> {
     const lMatch = lbMatcher(this.key);
     const uMatch = ubMatcher(this.key);
 
-    const toReturn: any[] = [];
+    let toReturn: V[] = [];
 
     if (lMatch && this.left) {
-      append(toReturn, this.left.betweenBounds(query, lbMatcher, ubMatcher));
+      toReturn = toReturn.concat(this.left.betweenBounds(query, lbMatcher, ubMatcher));
     }
     if (lMatch && uMatch) {
-      append(toReturn, this.data);
+      toReturn = toReturn.concat(this.data);
     }
     if (uMatch && this.right) {
-      append(toReturn, this.right.betweenBounds(query, lbMatcher, ubMatcher));
+      toReturn = toReturn.concat(this.right.betweenBounds(query, lbMatcher, ubMatcher));
+    }
+
+    return toReturn;
+  }
+
+  public keysBetweenBounds(query: AVLTreeQuery<K>, lbMatcher?: KeyMatcher<K>, ubMatcher?: KeyMatcher<K>): K[] {
+    if (this.key === void 0) {
+      return [];
+    }
+
+    lbMatcher = lbMatcher || this.getLowerBoundMatcher(query);
+    ubMatcher = ubMatcher || this.getUpperBoundMatcher(query);
+
+    const lMatch = lbMatcher(this.key);
+    const uMatch = ubMatcher(this.key);
+
+    let toReturn: K[] = [];
+
+    if (lMatch && this.left) {
+      toReturn = toReturn.concat(this.left.keysBetweenBounds(query, lbMatcher, ubMatcher));
+    }
+    if (lMatch && uMatch) {
+      toReturn.push(this.key);
+    }
+    if (uMatch && this.right) {
+      toReturn = toReturn.concat(this.right.keysBetweenBounds(query, lbMatcher, ubMatcher));
     }
 
     return toReturn;

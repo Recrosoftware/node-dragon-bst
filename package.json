@@ -1,6 +1,6 @@
 {
   "name": "dragon-bst",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "AVL Binary Search Tree implementation",
   "main": "index.js",
   "scripts": {
