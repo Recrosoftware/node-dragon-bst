@@ -184,7 +184,7 @@ describe('AVL tree', () => {
     });
   });
   describe('Search', () => {
-    it('Can find data in an AVLT', () => {
+    it('Can find data in an AVLTree', () => {
       const tree = new AVLTree();
 
       getRandomArray(100).forEach((n) => {
@@ -194,6 +194,31 @@ describe('AVL tree', () => {
 
       for (let i = 0; i < 100; ++i) {
         expect(tree.search(i)).toEqual(['some data for ' + i]);
+      }
+    });
+    it('Can find data in an AVLTree with custom keys comparison', () => {
+      function customCompareKey(a: { key: number }, b: { key: number }): -1 | 0 | 1 {
+        if (a.key > b.key) {
+          return 1;
+        }
+        if (a.key < b.key) {
+          return -1;
+        }
+        return 0;
+      }
+
+      const tree = new AVLTree<{ key: number }, string>({
+        unique: true,
+        compareKeys: customCompareKey
+      });
+
+      getRandomArray(100).forEach((n) => {
+        tree.insert({key: n}, 'some data for ' + n);
+      });
+      tree.validateTree();
+
+      for (let i = 0; i < 100; ++i) {
+        expect(tree.search({key: i})).toEqual(['some data for ' + i]);
       }
     });
     it('If no data can be found, return an empty array', () => {
