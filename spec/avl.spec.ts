@@ -1,4 +1,4 @@
-import {getRandomArray} from '../src/components/custom-utils';
+import {getRandomArray} from '../src/components/common';
 import {AVLTree} from '../src/dragon-bst';
 
 

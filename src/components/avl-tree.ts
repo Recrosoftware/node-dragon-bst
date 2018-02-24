@@ -1,4 +1,4 @@
-import {append, defaultCheckValueEquality, defaultCompareKeys, KeyMatcher, TreeError} from './custom-utils';
+import {append, defaultCheckValueEquality, defaultCompareKeys, KeyMatcher, TreeError} from './common';
 
 
 export interface AVLTreeQuery<K> {
@@ -8,7 +8,7 @@ export interface AVLTreeQuery<K> {
   $lte?: K;
 }
 
-export interface AVLTreeOptions<K, V extends any> {
+export interface AVLTreeOptions<K, V> {
   /**
    * The initial key-value pair with which initialize tree.
    */
@@ -35,7 +35,7 @@ export interface AVLTreeOptions<K, V extends any> {
 /**
  * Self-balancing binary search tree using the AVL implementation
  */
-export class AVLTree<K, V extends any> {
+export class AVLTree<K, V> {
   private avl: AVLTreeInternal<K, V>;
 
   /**
@@ -134,7 +134,7 @@ export class AVLTree<K, V extends any> {
   }
 }
 
-class AVLTreeInternal<K, V extends any> {
+class AVLTreeInternal<K, V> {
   private key: K;
   private data: V[];
   private height: number;
@@ -627,9 +627,11 @@ class AVLTreeInternal<K, V extends any> {
       if (this.left.height == null) {
         throw new TreeError(`Undefined height for node '${this.left.key}'`);
       }
-      if (this.compareKeys(this.left.key, this.key) >= 0) {
-        throw new TreeError(`Tree with root '${this.key}' is not a binary search tree`);
-      }
+      this.left.executeOnEveryNode((key) => {
+        if (this.compareKeys(key, this.key) >= 0) {
+          throw new TreeError(`Tree with root '${this.key}' is not a binary search tree`);
+        }
+      });
     }
 
     if (this.right) {
@@ -639,9 +641,11 @@ class AVLTreeInternal<K, V extends any> {
       if (this.right.height == null) {
         throw new TreeError(`Undefined height for node '${this.left.key}'`);
       }
-      if (this.compareKeys(this.right.key, this.key) <= 0) {
-        throw new TreeError(`Tree with root '${this.key}' is not a binary search tree`);
-      }
+      this.right.executeOnEveryNode((key) => {
+        if (this.compareKeys(key, this.key) <= 0) {
+          throw new TreeError(`Tree with root '${this.key}' is not a binary search tree`);
+        }
+      });
     }
 
     if (this.height == null) {
