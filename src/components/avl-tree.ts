@@ -20,6 +20,11 @@ export interface AVLTreeOptions<K, V> {
   unique?: boolean;
 
   /**
+   * If true inserting a piece of data already present for a specified key overwrite the old value.
+   */
+  uniqueValues?: boolean
+
+  /**
    * Specify a custom function to compare keys.
    * It must accepts two arguments and return one between -1, 0, 1.
    */
@@ -232,6 +237,8 @@ class AVLTreeInternal<K, V> {
   private right: AVLTreeInternal<K, V>;
 
   private unique: boolean;
+  private uniqueValues: boolean;
+
   private compareKeys: (a: K, b: K) => -1 | 0 | 1;
   private checkValueEquality: (a: V, b: V) => boolean;
 
@@ -254,6 +261,8 @@ class AVLTreeInternal<K, V> {
     }
 
     this.unique = options.unique != null ? options.unique : false;
+    this.uniqueValues = options.uniqueValues != null ? options.uniqueValues : true;
+
     this.compareKeys = options.compareKeys || defaultCompareKeys;
     this.checkValueEquality = options.checkValueEquality || defaultCheckValueEquality;
   }
@@ -312,7 +321,7 @@ class AVLTreeInternal<K, V> {
             {key: String(key), errorType: 'uniqueViolated'});
         } else {
           const presentIdx = currentNode.data.findIndex(d => this.checkValueEquality(d, value));
-          if (presentIdx >= 0) {
+          if (presentIdx >= 0 && this.uniqueValues) {
             currentNode.data[presentIdx] = value;
           } else {
             currentNode.data.push(value);
@@ -976,7 +985,10 @@ class AVLTreeInternal<K, V> {
   }
 
   private createSimilar(options: AVLTreeOptions<K, V>): AVLTreeInternal<K, V> {
+    options = options || {};
+
     options.unique = this.unique;
+    options.uniqueValues = this.uniqueValues;
     options.compareKeys = this.compareKeys;
     options.checkValueEquality = this.checkValueEquality;
 

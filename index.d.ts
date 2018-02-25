@@ -18,6 +18,11 @@ declare module 'dragon-bst' {
     unique?: boolean;
 
     /**
+     * If true inserting a piece of data already present for a specified key overwrite the old value.
+     */
+    uniqueValues?: boolean
+
+    /**
      * Specify a custom function to compare keys.
      * It must accepts two arguments and return one between -1, 0, 1.
      */

@@ -46,6 +46,32 @@ describe('AVL tree', () => {
       expect(_tree.avl.left).toBeNull();
       expect(_tree.avl.right).toBeNull();
     });
+    it('Insert non-unique-values in as unique-values tree', () => {
+      const tree = new AVLTree();
+
+      tree.insert(10, 'hi');
+      tree.insert(10, 'hello');
+      tree.insert(10, 'hi');
+
+      expect(tree.search(10)).toEqual(['hi', 'hello']);
+
+      tree.delete(10, 'hi');
+
+      expect(tree.search(10)).toEqual(['hello']);
+    });
+    it('Insert non-unique-values in as non-unique-values tree', () => {
+      const tree = new AVLTree({uniqueValues: false});
+
+      tree.insert(10, 'hi');
+      tree.insert(10, 'hello');
+      tree.insert(10, 'hi');
+
+      expect(tree.search(10)).toEqual(['hi', 'hello', 'hi']);
+
+      tree.delete(10, 'hi');
+
+      expect(tree.search(10)).toEqual(['hello']);
+    });
     it('If uniqueness constraint not enforced, we can insert different data for same key', () => {
       const tree = new AVLTree();
 
