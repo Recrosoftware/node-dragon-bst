@@ -487,221 +487,38 @@ class AVLTreeInternal<K, V> {
   }
 
   public searchAfter(key: K): V[] {
-    if (this.key === void 0) {
-      return [];
+    const node = this.searchNodeAfter(key);
+    if (node) {
+      return node.data;
     }
-
-    let currentNode: AVLTreeInternal<K, V> = this;
-
-    while (true) {
-      const compared = this.compareKeys(key, currentNode.key);
-
-      if (compared === 0) {
-        // if there's a right child, the next key will be there
-        if (currentNode.right) {
-          currentNode = currentNode.right;
-          // within the right branch, traverse left until leaf
-          while (currentNode.left) {
-            currentNode = currentNode.left;
-          }
-          return currentNode.data;
-        }
-
-        // traverse up until you find a bigger key
-        currentNode = currentNode.parent;
-        while (currentNode) {
-          if (this.compareKeys(key, currentNode.key) < 0) {
-            return currentNode.data;
-          }
-          currentNode = currentNode.parent;
-        }
-
-        return [];
-      }
-
-      if (compared < 0) {
-        if (!currentNode.left) {
-          return currentNode.data;
-        }
-        currentNode = currentNode.left;
-      } else {
-        if (!currentNode.right) {
-          // traverse up until you find a bigger key
-          currentNode = currentNode.parent;
-          while (currentNode) {
-            if (this.compareKeys(key, currentNode.key) < 0) {
-              return currentNode.data;
-            }
-            currentNode = currentNode.parent;
-          }
-          return [];
-        }
-        currentNode = currentNode.right;
-      }
-    }
+    return [];
   }
 
   public searchBefore(key: K): V[] {
-    if (this.key === void 0) {
-      return [];
+    const node = this.searchNodeBefore(key);
+
+    if (node) {
+      return node.data;
     }
-
-    let currentNode: AVLTreeInternal<K, V> = this;
-
-    while (true) {
-      const compared = this.compareKeys(key, currentNode.key);
-
-      if (compared === 0) {
-        // if there's a left child, the previous key will be there
-        if (currentNode.left) {
-          currentNode = currentNode.left;
-          // within the left branch, traverse right until leaf
-          while (currentNode.right) {
-            currentNode = currentNode.right;
-          }
-          return currentNode.data;
-        }
-
-        // traverse up until you find a smaller key
-        currentNode = currentNode.parent;
-        while (currentNode) {
-          if (this.compareKeys(key, currentNode.key) > 0) {
-            return currentNode.data;
-          }
-          currentNode = currentNode.parent;
-        }
-        return [];
-      }
-
-      if (compared < 0) {
-        if (!currentNode.left) {
-          // traverse up until you find a smaller key
-          currentNode = currentNode.parent;
-          while (currentNode) {
-            if (this.compareKeys(key, currentNode.key) > 0) {
-              return currentNode.data;
-            }
-            currentNode = currentNode.parent;
-          }
-          return [];
-        }
-        currentNode = currentNode.left;
-      } else {
-        if (!currentNode.right) {
-          return currentNode.data;
-        }
-        currentNode = currentNode.right;
-      }
-    }
+    return [];
   }
 
   public searchKeyAfter(key: K): K {
-    if (this.key === void 0) {
-      return void 0;
+    const node = this.searchNodeAfter(key);
+
+    if (node) {
+      return node.key;
     }
-
-    let currentNode: AVLTreeInternal<K, V> = this;
-
-    while (true) {
-      const compared = this.compareKeys(key, currentNode.key);
-
-      if (compared === 0) {
-        // if there's a right child, the next key will be there
-        if (currentNode.right) {
-          currentNode = currentNode.right;
-          // within the right branch, traverse left until leaf
-          while (currentNode.left) {
-            currentNode = currentNode.left;
-          }
-          return currentNode.key;
-        }
-
-        // traverse up until you find a bigger key
-        currentNode = currentNode.parent;
-        while (currentNode) {
-          if (this.compareKeys(key, currentNode.key) < 0) {
-            return currentNode.key;
-          }
-          currentNode = currentNode.parent;
-        }
-
-        return void 0;
-      }
-
-      if (compared < 0) {
-        if (!currentNode.left) {
-          return currentNode.key;
-        }
-        currentNode = currentNode.left;
-      } else {
-        if (!currentNode.right) {
-          // traverse up until you find a bigger key
-          currentNode = currentNode.parent;
-          while (currentNode) {
-            if (this.compareKeys(key, currentNode.key) < 0) {
-              return currentNode.key;
-            }
-            currentNode = currentNode.parent;
-          }
-          return void 0;
-        }
-        currentNode = currentNode.right;
-      }
-    }
+    return void 0;
   }
 
   public searchKeyBefore(key: K): K {
-    if (this.key === void 0) {
-      return void 0;
+    const node = this.searchNodeBefore(key);
+
+    if (node) {
+      return node.key;
     }
-
-    let currentNode: AVLTreeInternal<K, V> = this;
-
-    while (true) {
-      const compared = this.compareKeys(key, currentNode.key);
-
-      if (compared === 0) {
-        // if there's a left child, the previous key will be there
-        if (currentNode.left) {
-          currentNode = currentNode.left;
-          // within the left branch, traverse right until leaf
-          while (currentNode.right) {
-            currentNode = currentNode.right;
-          }
-          return currentNode.key;
-        }
-
-        // traverse up until you find a smaller key
-        currentNode = currentNode.parent;
-        while (currentNode) {
-          if (this.compareKeys(key, currentNode.key) > 0) {
-            return currentNode.key;
-          }
-          currentNode = currentNode.parent;
-        }
-        return void 0;
-      }
-
-      if (compared < 0) {
-        if (!currentNode.left) {
-          // traverse up until you find a smaller key
-          currentNode = currentNode.parent;
-          while (currentNode) {
-            if (this.compareKeys(key, currentNode.key) > 0) {
-              return currentNode.key;
-            }
-            currentNode = currentNode.parent;
-          }
-          return void 0;
-        }
-        currentNode = currentNode.left;
-      } else {
-        if (!currentNode.right) {
-          return currentNode.key;
-        }
-        currentNode = currentNode.right;
-      }
-    }
+    return void 0;
   }
 
   public getMinKey(): K {
@@ -791,6 +608,115 @@ class AVLTreeInternal<K, V> {
     action(this.key, this.data);
     if (this.right) {
       this.right.executeOnEveryNode(action);
+    }
+  }
+
+  private searchNodeAfter(key: K): AVLTreeInternal<K, V> {
+    if (this.key === void 0) {
+      return null;
+    }
+
+    let currentNode: AVLTreeInternal<K, V> = this;
+
+    while (true) {
+      const compared = this.compareKeys(key, currentNode.key);
+
+      if (compared === 0) {
+        // if there's a right child, the next key will be there
+        if (currentNode.right) {
+          currentNode = currentNode.right;
+          // within the right branch, traverse left until leaf
+          while (currentNode.left) {
+            currentNode = currentNode.left;
+          }
+          return currentNode;
+        }
+
+        // traverse up until you find a bigger key
+        currentNode = currentNode.parent;
+        while (currentNode) {
+          if (this.compareKeys(key, currentNode.key) < 0) {
+            return currentNode;
+          }
+          currentNode = currentNode.parent;
+        }
+
+        return null;
+      }
+
+      if (compared < 0) {
+        if (!currentNode.left) {
+          return currentNode;
+        }
+        currentNode = currentNode.left;
+      } else {
+        if (!currentNode.right) {
+          // traverse up until you find a bigger key
+          currentNode = currentNode.parent;
+          while (currentNode) {
+            if (this.compareKeys(key, currentNode.key) < 0) {
+              return currentNode;
+            }
+            currentNode = currentNode.parent;
+          }
+          return null;
+        }
+        currentNode = currentNode.right;
+      }
+    }
+  }
+
+  private searchNodeBefore(key: K): AVLTreeInternal<K, V> {
+    if (this.key === void 0) {
+      return null;
+    }
+
+    let currentNode: AVLTreeInternal<K, V> = this;
+
+    while (true) {
+      const compared = this.compareKeys(key, currentNode.key);
+
+      if (compared === 0) {
+        // if there's a left child, the previous key will be there
+        if (currentNode.left) {
+          currentNode = currentNode.left;
+          // within the left branch, traverse right until leaf
+          while (currentNode.right) {
+            currentNode = currentNode.right;
+          }
+          return currentNode;
+        }
+
+        // traverse up until you find a smaller key
+        currentNode = currentNode.parent;
+        while (currentNode) {
+          if (this.compareKeys(key, currentNode.key) > 0) {
+            return currentNode;
+          }
+          currentNode = currentNode.parent;
+        }
+        return null;
+      }
+
+      if (compared < 0) {
+        if (!currentNode.left) {
+          // traverse up until you find a smaller key
+          currentNode = currentNode.parent;
+          while (currentNode) {
+            if (this.compareKeys(key, currentNode.key) > 0) {
+              return currentNode;
+            }
+            currentNode = currentNode.parent;
+          }
+          return null;
+        }
+        currentNode = currentNode.left;
+      } else {
+        if (!currentNode.right) {
+          return currentNode;
+        }
+        currentNode = currentNode.right;
+      }
     }
   }
 

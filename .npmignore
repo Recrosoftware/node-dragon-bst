@@ -7,7 +7,7 @@
 /src
 /spec
 tsconfig.json
-webpack-config.js
+webpack.config.js
 
 # Following the .gitignore file content
 
