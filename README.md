@@ -18,10 +18,10 @@ npm test
 ### Import module
 ```javascript
 // ES6
-import {AVLTree} from 'dragon-bst';
+import {AVLTree} from '@recrosoftware/dragon-bst';
 
 // or ES5
-var AVLTree = require('dragon-bst').AVLTree;
+var AVLTree = require('@recrosoftware/dragon-bst').AVLTree;
 ```
 
 ### Creating a tree
