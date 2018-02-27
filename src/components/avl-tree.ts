@@ -320,7 +320,13 @@ class AVLTreeInternal<K, V> {
           throw new TreeError(`Can't insert key '${key}', it violates the unique constraint`,
             {key: String(key), errorType: 'uniqueViolated'});
         } else {
-          const presentIdx = currentNode.data.findIndex(d => this.checkValueEquality(d, value));
+          let presentIdx = -1;
+          currentNode.data.forEach((d, idx) => {
+            if (presentIdx < 0 && this.checkValueEquality(d, value)) {
+              presentIdx = idx;
+            }
+          });
+
           if (presentIdx >= 0 && this.uniqueValues) {
             currentNode.data[presentIdx] = value;
           } else {
