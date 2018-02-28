@@ -1,7 +1,5 @@
 const path = require('path');
-
 const webpack = require('webpack');
-const nodeExternals = require('webpack-node-externals');
 
 const WORKING_DIR = __dirname;
 const SOURCE_DIR = path.join(WORKING_DIR, 'src');
@@ -34,12 +32,6 @@ module.exports = (env) => {
         {test: /\.tsx?$/, loader: 'ts-loader'}
       ]
     },
-    plugins: plugins,
-    target: 'node',
-    node: {
-      __dirname: false,
-      __filename: true
-    },
-    externals: [nodeExternals()]
+    plugins: plugins
   };
 };

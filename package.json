@@ -1,6 +1,6 @@
 {
   "name": "@recrosoftware/dragon-bst",
-  "version": "1.0.0",
+  "version": "1.0.1-SNAPSHOT",
   "description": "AVL Binary Search Tree implementation",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,9 @@
     "build": "npm run build:prod",
     "build:dev": "webpack --config webpack.config.js",
     "build:prod": "webpack --config webpack.config.js --env.production",
-    "test": "jasmine-ts 'spec/**/*.spec.ts'"
+    "test": "jasmine-ts 'spec/**/*.spec.ts'",
+    "prepack": "npm run build",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "avl tree",
@@ -29,8 +31,7 @@
     "jasmine-ts": "^0.2.1",
     "ts-loader": "^3.5.0",
     "typescript": "^2.7.2",
-    "webpack": "^3.11.0",
-    "webpack-node-externals": "^1.6.0"
+    "webpack": "^3.11.0"
   },
   "license": "MIT",
   "homepage": "https://github.com/Recrosoftware/node-dragon-bst#readme",
