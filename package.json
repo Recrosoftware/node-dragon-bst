@@ -1,6 +1,6 @@
 {
   "name": "@recrosoftware/dragon-bst",
-  "version": "1.0.1-SNAPSHOT",
+  "version": "1.0.1",
   "description": "AVL Binary Search Tree implementation",
   "main": "index.js",
   "scripts": {
