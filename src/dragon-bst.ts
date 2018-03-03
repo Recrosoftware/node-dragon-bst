@@ -1,4 +1,5 @@
-import {AVLTree, AVLTreeOptions, AVLTreeQuery} from './components/avl-tree';
+import {AVLTree} from './components/avl-tree';
 import {TreeError} from './components/common';
 
-export {AVLTree, AVLTreeOptions, AVLTreeQuery, TreeError};
+
+export {AVLTree, TreeError};

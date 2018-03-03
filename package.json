@@ -9,7 +9,7 @@
     "build:dev": "webpack --config webpack.config.js",
     "build:prod": "webpack --config webpack.config.js --env.production",
     "test": "jasmine-ts 'spec/**/*.spec.ts'",
-    "prepack": "npm run build"
+    "prepare": "npm run build"
   },
   "keywords": [
     "avl tree",
